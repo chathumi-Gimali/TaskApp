@@ -91,7 +91,7 @@
 
             <Button
                 android:id="@+id/saveTaskButton"
-                style="Widget.App.Button.Fill"
+                style="@style/CardViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="?actionBarSize"
                 android:layout_gravity="center"
