@@ -65,7 +65,7 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="18sp"
-        app:icon="@drawable/ic_add_circle"
-        app:iconSize="25dp" />
+        app:icon="@drawable/ic_add_circle"/>
+<!--        app:iconSize="25dp" />recycle view-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
