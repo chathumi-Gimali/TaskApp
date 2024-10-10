@@ -7,10 +7,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.tasklist.app.utils.setupDialog
 import com.example.tasklist.app.utils.validateEditText
 import com.example.tasklist.databinding.ActivityMainBinding
@@ -19,93 +16,88 @@ import com.google.android.material.textfield.TextInputLayout
 
 class MainActivity : AppCompatActivity() {
 
-    private val mainBinding:ActivityMainBinding by lazy{
+    private val mainBinding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val addTaskDialog:Dialog by lazy{
-        Dialog(this,R.style.DialogCustomTheme).apply{
+    private val addTaskDialog: Dialog by lazy {
+        Dialog(this, R.style.DialogCustomTheme).apply {
             setupDialog(R.layout.add_task_dialog)
         }
     }
 
-    private val updateTaskDialog:Dialog by lazy{
-        Dialog(this,R.style.DialogCustomTheme).apply{
+    private val updateTaskDialog: Dialog by lazy {
+        Dialog(this, R.style.DialogCustomTheme).apply {
             setupDialog(R.layout.update_task_dialog)
         }
     }
 
-    private val loadingDialog:Dialog by lazy{
-        Dialog(this,R.style.DialogCustomTheme).apply{
+    private val loadingDialog: Dialog by lazy {
+        Dialog(this, R.style.DialogCustomTheme).apply {
             setupDialog(R.layout.loading_dialog)
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mainBinding.root)
 
-        //add task start
-        val addCloseImg=addTaskDialog.findViewById<ImageView>(R.id.closeImg)
-        addCloseImg.setOnClickListener{addTaskDialog.dismiss()}
+        // Add task dialog setup
+        val addCloseImg = addTaskDialog.findViewById<ImageView>(R.id.closeImg)
+        addCloseImg.setOnClickListener { addTaskDialog.dismiss() }
 
-        val addEDTitle =addTaskDialog. findViewById<TextInputEditText>(R.id.edTaskTitle)
-        val addEDTitleL= addTaskDialog.findViewById<TextInputLayout>(R.id.edTaskTitleL)
+        val addETTitle = addTaskDialog.findViewById<TextInputEditText>(R.id.edTaskTitle)
+        val addETTitleL = addTaskDialog.findViewById<TextInputLayout>(R.id.edTaskTitleL)
 
-        addEDTitle.addTextChangedListener(object : TextWatcher {
+        addETTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(s: Editable) {
-               validateEditText(addEDTitle, addEDTitleL)
+                validateEditText(addETTitle, addETTitleL)
             }
         })
 
-        val addEDDesc = updateTaskDialog.findViewById<TextInputEditText>(R.id.edTaskDesc)
-        val addEDDescL= updateTaskDialog.findViewById<TextInputLayout>(R.id.edTaskDescL)
+        val addETDesc = addTaskDialog.findViewById<TextInputEditText>(R.id.edTaskDesc)
+        val addETDescL = addTaskDialog.findViewById<TextInputLayout>(R.id.edTaskDescL)
 
-        addEDDesc.addTextChangedListener(object : TextWatcher {
+        addETDesc.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(s: Editable) {
-                validateEditText(addEDDesc, addEDDescL)
+                validateEditText(addETDesc, addETDescL)
             }
         })
 
+        val saveTaskBtn = addTaskDialog.findViewById<Button>(R.id.saveTaskBtn)
+        saveTaskBtn.setOnClickListener {
+            if (validateEditText(addETTitle, addETTitleL)
+                && validateEditText(addETDesc, addETDescL)
+            ) {
+                addTaskDialog.dismiss()
+                Toast.makeText(this, "validated!!", Toast.LENGTH_LONG).show()
+                loadingDialog.show()
+            }
+        }
 
-        mainBinding.addTaskFABtn.setOnClickListener{
+        // Add task FAB button click
+        mainBinding.addTaskFABtn.setOnClickListener {
             addTaskDialog.show()
         }
 
-        val saveTaskBtn=addTaskDialog.findViewById<Button>(R.id.saveTaskBtn)
-        saveTaskBtn.setOnClickListener {
-          if( validateEditText(addEDTitle, addEDTitleL)
-              &&  validateEditText(addEDDesc, addEDDescL)
-              )  {
-                addTaskDialog.dismiss()
-                Toast.makeText(this,"validated!!",Toast.LENGTH_LONG).show()
-              loadingDialog.show()
-          }
-        }
+        // Update task dialog setup
+        val updateETTitle = updateTaskDialog.findViewById<TextInputEditText>(R.id.edTaskTitle)
+        val updateETTitleL = updateTaskDialog.findViewById<TextInputLayout>(R.id.edTaskTitleL)
 
-
-        //Add task end
-
-
-        //update Task start
-        val updateEDTitle =updateTaskDialog. findViewById<TextInputEditText>(R.id.edTaskTitle)
-        val updateEDTitleL= updateTaskDialog.findViewById<TextInputLayout>(R.id.edTaskTitleL)
-
-       updateEDTitle.addTextChangedListener(object : TextWatcher {
+        updateETTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(s: Editable) {
-                validateEditText(updateEDTitle, updateEDTitleL)
+                validateEditText(updateETTitle, updateETTitleL)
             }
         })
 
         val updateETDesc = updateTaskDialog.findViewById<TextInputEditText>(R.id.edTaskDesc)
-        val updateETDescL= updateTaskDialog.findViewById<TextInputLayout>(R.id.edTaskDescL)
+        val updateETDescL = updateTaskDialog.findViewById<TextInputLayout>(R.id.edTaskDescL)
 
         updateETDesc.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -115,24 +107,18 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        val updateCloseImg=updateTaskDialog.findViewById<ImageView>(R.id.closeImg)
-        updateCloseImg.setOnClickListener{updateTaskDialog.dismiss()}
+        val updateCloseImg = updateTaskDialog.findViewById<ImageView>(R.id.closeImg)
+        updateCloseImg.setOnClickListener { updateTaskDialog.dismiss() }
 
-
-        val updateTaskBtn=updateTaskDialog.findViewById<Button>(R.id.updateTaskBtn)
+        val updateTaskBtn = updateTaskDialog.findViewById<Button>(R.id.updateTaskBtn)
         updateTaskBtn.setOnClickListener {
-            if( validateEditText(updateEDTitle, updateEDTitleL)
-                &&   validateEditText(updateETDesc, updateETDescL)
-            )  {
+            if (validateEditText(updateETTitle, updateETTitleL)
+                && validateEditText(updateETDesc, updateETDescL)
+            ) {
                 updateTaskDialog.dismiss()
-                Toast.makeText(this,"validated!!",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "validated!!", Toast.LENGTH_LONG).show()
                 loadingDialog.show()
             }
         }
-
-
-        //update task end
-
-
     }
 }
