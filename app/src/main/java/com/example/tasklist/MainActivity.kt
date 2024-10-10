@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
               )  {
                 addTaskDialog.dismiss()
                 Toast.makeText(this,"validated!!",Toast.LENGTH_LONG).show()
-              loadingDialog
+              loadingDialog.show()
           }
         }
 
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
             )  {
                 updateTaskDialog.dismiss()
                 Toast.makeText(this,"validated!!",Toast.LENGTH_LONG).show()
-                loadingDialog
+                loadingDialog.show()
             }
         }
 
